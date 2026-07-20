@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Emergencias - Clínica San Jose</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-white border-b border-slate-300 px-6 py-4 flex justify-between items-center shadow-sm">
+            <div class="flex items-center space-x-3">
+                <div class="bg-teal-500 text-white p-2 rounded-lg shadow-md shadow-teal-600/20">
+                    <i data-lucide="activity" class="h-6 w-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">Clínica San José</h1>
+                    <p class="text-xs text-slate-500 font-medium flex items-center gap-1">
+                        <span class="inline-block w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+                        Panel de control de Emergencias Actualizado <span id="last-update">--:--:--</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="text-right hidden md:block">
+                    <p class="text-sm font-semibold text-slate-800">Dr. Carlos Aviles</p>
+                    <p class="text-xs text-teal-600 font-medium">Director Médico</p>
+                </div>
+                <div class="bg-slate-100 p-2.5 rounded-lg border border-slate-200">
+                    <i data-lucide="user" class="h-5 w-5 text-slate-600"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6 space-y-6 max-w-[1600px] mx-auto w-full">
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ocupación Total</p>
+                            <h3 id="kpi-ocupacion" class="text-3xl font-extrabold text-slate-900 mt-1">--%</h3>
+                        </div>
+                        <div class="p-2.5 bg-teal-50 text-teal-600 rounded-lg">
+                            <i data-lucide="users" class="h-5 w-5"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <span id="kpi-camas-detalle">-- de 50 Camas</span>
+                        <span class="text-teal-600 font-semibold"> Crítico</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">En Sala de Espera</p>
+                            <h3 id="kpi-espera" class="text-3xl font-extrabold text-slate-900 mt-1">-</h3>
+                        </div>
+                        <div class="p-2.5 bg-slate-100 text-slate-600 rounded-lg">
+                            <i data-lucide="clock" class="h-5 w-5"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Promedio: <strong class="text-slate-800">42 min</strong></span>
+                        <span class="text-slate-600 font-semibold flex items-center gap-1">Alta Demanda</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Médicos Activos</p>
+                            <h3 id="kpi-medicos" class="text-3xl font-extrabold text-slate-900 mt-1">-</h3>
+                        </div>
+                        <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-lg">
+                            <i data-lucide="stethoscope" class="h-5 w-5"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <span>En turno de guardia</span>
+                        <span class="text-emerald-600 font-semibold"> Estable</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Traslados a UCI</p>
+                            <h3 id="kpi-traslados" class="text-3xl font-extrabold text-slate-900 mt-1">-</h3>
+                        </div>
+                        <div class="p-2.5 bg-teal-900/10 text-teal-700 rounded-lg">
+                            <i data-lucide="truck" class="h-5 w-5"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <span>Pendientes críticos</span>
+                        <span class="text-teal-600 font-bold animate-pulse"> ALERTA</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm lg:col-span-2 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="shield-alert" class="text-teal-600 h-5 w-5"></i>
+                            <h2 class="text-lg font-bold text-slate-900">Monitoreo de Pacientes Activos</h2>
+                        </div>
+                    
+                        <div class="flex bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs font-medium">
+                            <button onclick="filtrarPacientes('todos')" class="filter-btn px-3 py-1.5 rounded-md bg-teal-600 text-white transition-all">Todos</button>
+                            <button onclick="filtrarPacientes('1')" class="filter-btn px-3 py-1.5 rounded-md text-slate-500 hover:text-slate-900 transition-all">Nivel 1</button>
+                            <button onclick="filtrarPacientes('2')" class="filter-btn px-3 py-1.5 rounded-md text-slate-500 hover:text-slate-900 transition-all">Nivel 2</button>
+                            <button onclick="filtrarPacientes('3')" class="filter-btn px-3 py-1.5 rounded-md text-slate-500 hover:text-slate-900 transition-all">Nivel 3</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 bg-slate-100/50 text-xs font-bold uppercase tracking-wider text-slate-500">
+                                    <th class="px-6 py-3.5">Paciente</th>
+                                    <th class="px-6 py-3.5 text-center">Triaje</th>
+                                    <th class="px-6 py-3.5">Síntomas / Diagnóstico</th>
+                                    <th class="px-6 py-3.5">Espera</th>
+                                    <th class="px-6 py-3.5 text-right">Gestión</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-pacientes" class="divide-y divide-slate-100 text-sm">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <i data-lucide="bell" class="text-teal-600 h-5 w-5"></i> Alertas de Dirección
+                        </h2>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-slate-50 border-l-4 border-slate-400 rounded-r-lg">
+                                <h4 class="text-xs font-bold uppercase text-slate-700">UCI Saturada</h4>
+                                <p class="text-xs text-slate-600 mt-1">Sin disponibilidad inmediata de camas críticas para adultos.</p>
+                            </div>
+                            <div class="p-3 bg-teal-50 border-l-4 border-teal-600 rounded-r-lg">
+                                <h4 class="text-xs font-bold uppercase text-teal-700">Personal Médico</h4>
+                                <p class="text-xs text-slate-600 mt-1">Alta afluencia en Trauma-Shock. Guardia bajo presión.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="bg-white border-t border-slate-200 px-6 py-3 text-center text-xs text-slate-500">
+            &copy; 2026 Clínica San José - Sistema de Monitoreo de Procesos Asistenciales Clínicos.
+        </footer>
+    </div>
+
+    <script>
+        const estadoClinica = {
+            kpis: { ocupacion: 88, camasUsadas: 44, camasTotales: 50, salaEspera: 14, medicosGuardia: 8, trasladosUci: 3 },
+            pacientes: [
+                { id: 4401, nombre: "Olmedo Zambrano", edad: 67, triaje: "1", clasificacion: "Resucitación", sintomas: "Dolor", espera: "12 min", color: "red" },
+                { id: 4398, nombre: "Naomi Aviles", edad: 19, triaje: "2", clasificacion: "Emergencia", sintomas: "Poli traumatismo", espera: "25 min", color: "orange" },
+                { id: 4412, nombre: "Miguel Zambrano", edad: 42, triaje: "3", clasificacion: "Urgencia", sintomas: "Crisis asmática moderada", espera: "45 min", color: "amber" },
+                { id: 4415, nombre: "Plinio Loor", edad: 19, triaje: "4", clasificacion: "Menor", sintomas: "Esguince de tobillo grado I", espera: "60 min", color: "emerald" }
+            ]
+        };
+
+        function renderKPIs() {
+            document.getElementById('kpi-ocupacion').innerText = `${estadoClinica.kpis.ocupacion}%`;
+            document.getElementById('kpi-camas-detalle').innerText = `${estadoClinica.kpis.camasUsadas} de ${estadoClinica.kpis.camasTotales} Camas Usadas`;
+            document.getElementById('kpi-espera').innerText = estadoClinica.kpis.salaEspera;
+            document.getElementById('kpi-medicos').innerText = estadoClinica.kpis.medicosGuardia;
+            document.getElementById('kpi-traslados').innerText = estadoClinica.kpis.trasladosUci;
+            
+            const ahora = new Date();
+            document.getElementById('last-update').innerText = ahora.toLocaleTimeString();
+        }
+
+        function renderTabla(listaPacientes) {
+            const tbody = document.getElementById('tabla-pacientes');
+            tbody.innerHTML = ""; 
+            if(listaPacientes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center p-6 text-slate-400">No hay pacientes en esta categoría</td></tr>`;
+                return;
+            }
+
+            listaPacientes.forEach(paciente => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                const colorMap = {
+                    red: "bg-red-50 text-red-700 border-red-200",
+                    orange: "bg-orange-50 text-orange-700 border-orange-200",
+                    amber: "bg-amber-50 text-amber-700 border-amber-200",
+                    emerald: "bg-emerald-50 text-emerald-700 border-emerald-200"
+                };
+
+                const dotColorMap = {
+                    red: "bg-red-500",
+                    orange: "bg-orange-500",
+                    amber: "bg-amber-500",
+                    emerald: "bg-emerald-500"
+                };
+
+                tr.innerHTML = `
+                    <td class="px-6 py-4">
+                        <div class="font-semibold text-slate-900">${paciente.nombre}</div>
+                        <div class="text-xs text-slate-500">ID: #${paciente.id} • ${paciente.edad} años</div>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${colorMap[paciente.color]} border">
+                            <span class="w-2 h-2 rounded-full ${dotColorMap[paciente.color]}"></span>
+                            Nivel ${paciente.triaje} • ${paciente.clasificacion}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600">${paciente.sintomas}</td>
+                    <td class="px-6 py-4 text-slate-600 font-medium">${paciente.espera}</td>
+                    <td class="px-6 py-4 text-right">
+                        <button onclick="atenderPaciente(${paciente.id})" class="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-3 py-1.5 rounded transition-all">
+                            Gestionar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filtrarPacientes(nivel) {
+            const botones = document.querySelectorAll('.filter-btn');
+            botones.forEach(btn => btn.className = "filter-btn px-3 py-1.5 rounded-md text-slate-500 hover:text-slate-900 transition-all");
+            event.target.className = "filter-btn px-3 py-1.5 rounded-md bg-teal-600 text-white transition-all";
+
+            if (nivel === 'todos') {
+                renderTabla(estadoClinica.pacientes);
+            } else {
+                const filtrados = estadoClinica.pacientes.filter(p => p.triaje === nivel);
+                renderTabla(filtrados);
+            }
+        }
+        
+        function atenderPaciente(id) {
+            alert(`Abriendo expediente médico del paciente ID: #${id} para asignación de recursos.`);
+        }
+
+        function simularActualizacionEnVivo() {
+            setInterval(() => {
+                estadoClinica.kpis.salaEspera = Math.floor(Math.random() * (18 - 10 + 1)) + 10;
+                renderKPIs();
+            }, 10000); 
+        }
+
+        window.onload = function() {
+            renderKPIs();
+            renderTabla(estadoClinica.pacientes);
+            simularActualizacionEnVivo();
+            lucide.createIcons(); 
+        };
+    </script>
+</body>
+</html>
